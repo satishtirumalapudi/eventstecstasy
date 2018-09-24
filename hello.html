@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Events</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link href='http://fonts.googleapis.com/css?family=Arizonia' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Merienda+One' rel='stylesheet' type='text/css'>
+  <style type="text/css">
+  	.navbar {
+  		padding: 30px;
+  	}
+  	a {
+  		color:black;
+  		font-size: 12px;
+  		font-weight: 600;
+  		letter-spacing: 3.5px;
+  		line-height: 2;
+  		font-family: 'Open Sans', sans-serif;
+  		text-transform: uppercase;
+  	}
+    .cover {
+      overflow-y: auto;
+      height: 100%;
+    }
+  	.navbar-brand {
+  		font-family: 'Montserrat', sans-serif;
+  		font-size: 30px;
+  		font-weight: 700;
+
+  	}
+    .back, .mobile-back {
+      text-align: center;
+      font: 400 20px/1.2 'Merienda One', Helvetica, sans-serif;
+      color: rgba(0,0,0,0.7);
+      text-shadow: 3px 3px 3px #fff;
+      padding-top: 10px;
+    }
+  	.icon-bar {
+  		background-color: black;
+  	}
+    a:link {
+      background-color: white;
+    }
+    .nav>li>a:focus, .nav>li>a:hover {
+      background-color: #fb632e;
+      color: white;
+    }
+    .active-tile {
+    	background-color: #fb632e;
+    	color: white;
+    }
+    .event-title {
+      text-transform: uppercase;
+      color: #2b2b2b;
+      font-weight: 700;
+      text-align: center;
+      font-size: 25px;
+    }
+  </style>
+  <style type="text/css">
+    /* entire container, keeps perspective */
+.flip-container {
+  -webkit-perspective: 1000;
+			-moz-perspective: 1000;
+			-ms-perspective: 1000;
+			perspective: 1000;
+
+			-ms-transform: perspective(1000px);
+			-moz-transform: perspective(1000px);
+    			-moz-transform-style: preserve-3d; 
+    			-ms-transform-style: preserve-3d; 
+}
+  
+		/* START: Accommodating for IE */
+			.flip-container:hover .back, .flip-container.hover .back {
+    -webkit-transform: rotateY(0deg);
+    -moz-transform: rotateY(0deg);
+    -o-transform: rotateY(0deg);
+    -ms-transform: rotateY(0deg);
+    transform: rotateY(0deg);
+}
+
+.flip-container:hover .front, .flip-container.hover .front {
+    -webkit-transform: rotateY(180deg);
+    -moz-transform: rotateY(180deg);
+    -o-transform: rotateY(180deg);
+    transform: rotateY(180deg);
+}
+		
+		/* END: Accommodating for IE */
+		
+		
+.flip-container, .front, .back {
+  height: 480px;
+  border: 1px solid black;
+  border-radius: 10px;
+}
+.flip-container {
+  width: 30%;
+  margin-left: 1%;
+  margin-right: 1%;
+  display: inline-block;
+}
+.front, .back {
+  width: 100%;  
+  text-align: center;
+}
+/* flip speed goes here */
+.flipper {
+ 
+			-webkit-transition: 0.6s;
+			-webkit-transform-style: preserve-3d;
+			-ms-transition: 0.6s;
+
+			-moz-transition: 0.6s;
+			-moz-transform: perspective(1000px);
+			-moz-transform-style: preserve-3d;
+			-ms-transform-style: preserve-3d;
+
+			transition: 0.6s;
+			transform-style: preserve-3d;
+
+			position: relative;
+
+  width: 100%!important;
+}
+
+/* hide back of pane during swap */
+.front, .back {
+-webkit-backface-visibility: hidden;
+			-moz-backface-visibility: hidden;
+			-ms-backface-visibility: hidden;
+			backface-visibility: hidden;
+
+		    -webkit-transition: 0.6s;
+		    -webkit-transform-style: preserve-3d;
+		    -webkit-transform: rotateY(0deg);
+
+		    -moz-transition: 0.6s;
+		    -moz-transform-style: preserve-3d;
+		    -moz-transform: rotateY(0deg);
+
+		    -o-transition: 0.6s;
+		    -o-transform-style: preserve-3d;
+		    -o-transform: rotateY(0deg);
+
+		    -ms-transition: 0.6s;
+		    -ms-transform-style: preserve-3d;
+		    -ms-transform: rotateY(0deg);
+
+		    transition: 0.6s;
+		    transform-style: preserve-3d;
+		    transform: rotateY(0deg);
+
+			position: absolute;
+			top: 0;
+			left: 0;
+}
+
+
+/* front pane, placed above back */
+.front {
+  -webkit-transform: rotateY(0deg);
+			-ms-transform: rotateY(0deg);
+			z-index: 2;
+}
+
+/* back, initially hidden pane */
+.back {
+ -webkit-transform: rotateX(-180deg);
+		    -moz-transform: rotateX(-180deg);
+		    -o-transform: rotateX(-180deg);
+		    -ms-transform: rotateX(-180deg);
+		    transform: rotateX(-180deg);
+
+}
+.tiles {
+  margin-bottom: 15px;
+}
+.heading {
+  text-align: center;
+  margin-bottom: 15px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 35px;
+  line-height: 2;
+  font-weight: 700; 
+}
+@media only screen and (max-width: 802px) {
+  .tiles {
+    display: none;
+  }
+  .mobile-front, .mobile-back {
+    width: 100%;
+    height: 100%;
+  }
+  .mobile-tile {
+    margin-left: 10%;
+    width: 80%;
+  }
+  img {
+      width: 100%;
+      max-height: 100%;
+      height: 70%;
+      width: 100%;
+    }
+  }
+  @media only screen and (min-width: 1120px) {
+.tiles {
+  margin-left: 3%;
+  }
+}
+
+   @media only screen and (max-width: 1120px) and (min-width: 720px) {
+    .flip-container {
+    width: 32.8%;
+    margin:0px;
+  }
+  .tiles {
+    margin-left: 1%;
+  }
+  }
+
+
+  /*For mobile */
+.mobile-flip-container {
+   -webkit-perspective: 1000;
+			-moz-perspective: 1000;
+			-ms-perspective: 1000;
+			perspective: 1000;
+
+			-ms-transform: perspective(1000px);
+			-moz-transform: perspective(1000px);
+    			-moz-transform-style: preserve-3d; 
+    			-ms-transform-style: preserve-3d; 
+}
+/* flip the pane when hovered */
+  
+  	.mobile-flip-container:hover .mobile-back, .mobile-flip-container.hover .mobile-back {
+    -webkit-transform: rotateY(0deg);
+    -moz-transform: rotateY(0deg);
+    -o-transform: rotateY(0deg);
+    -ms-transform: rotateY(0deg);
+    transform: rotateY(0deg);
+}
+
+.mobile-flip-container:hover .mobile-front, .mobile-flip-container.hover .mobile-front {
+    -webkit-transform: rotateX(180deg);
+    -moz-transform: rotateX(180deg);
+    -o-transform: rotateX(180deg);
+    transform: rotateX(180deg);
+}
+
+.mobile-flip-container, .mobile-front, .mobile-back {
+  height: 480px;
+  border: 1px solid black;
+  border-radius: 10px;
+}
+
+/* flip speed goes here */
+.mobile-flipper {
+  	-webkit-transition: 0.6s;
+			-webkit-transform-style: preserve-3d;
+			-ms-transition: 0.6s;
+
+			-moz-transition: 0.6s;
+			-moz-transform: perspective(1000px);
+			-moz-transform-style: preserve-3d;
+			-ms-transform-style: preserve-3d;
+
+			transition: 0.6s;
+			transform-style: preserve-3d;
+
+			position: relative;
+  width: 100%!important;
+}
+
+/* hide back of pane during swap */
+.mobile-front, .mobile-back {
+  -webkit-backface-visibility: hidden;
+			-moz-backface-visibility: hidden;
+			-ms-backface-visibility: hidden;
+			backface-visibility: hidden;
+
+		    -webkit-transition: 0.6s;
+		    -webkit-transform-style: preserve-3d;
+		    -webkit-transform: rotateY(0deg);
+
+		    -moz-transition: 0.6s;
+		    -moz-transform-style: preserve-3d;
+		    -moz-transform: rotateY(0deg);
+
+		    -o-transition: 0.6s;
+		    -o-transform-style: preserve-3d;
+		    -o-transform: rotateY(0deg);
+
+		    -ms-transition: 0.6s;
+		    -ms-transform-style: preserve-3d;
+		    -ms-transform: rotateY(0deg);
+
+		    transition: 0.6s;
+		    transform-style: preserve-3d;
+		    transform: rotateY(0deg);
+
+			position: absolute;
+			top: 0;
+			left: 0;
+}
+
+/* front pane, placed above back */
+.mobile-front {
+  -webkit-transform: rotateY(0deg);
+			-ms-transform: rotateY(0deg);
+			z-index: 2;;
+}
+
+/* back, initially hidden pane */
+.mobile-back {
+  -webkit-transform: rotateY(-180deg);
+		    -moz-transform: rotateY(-180deg);
+		    -o-transform: rotateY(-180deg);
+		    -ms-transform: rotateY(-180deg);
+		    transform: rotateY(-180deg);
+}
+
+@media only screen and (min-width: 802px) {
+  .mobile-tile {
+    display: none;
+  }
+  img {
+      max-width: 100%;
+      max-height: 100%;
+      width: 100%;
+      height: 60%;
+    }
+  }
+@media only screen and (max-width: 480px) {
+   .mobile-tile {
+    margin-left: 3%;
+    width: 94%;
+  }
+  }
+  .mobile-tile {
+    margin-bottom: 15px;
+  }
+  </style>
+
+</head>
+<body>
+<!--<nav class="navbar navbar">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="index.html">ROBOVANZA</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+       <li><a href="index.html">HOME</a></li>
+        <li><a href="events.html" class="active-tile">EVENTS</a></li>
+        <li><a href="techexpo.html">TECH EXPO</a></li>
+        <li><a href="register.html">REGISTER</a></li>
+         <li><a href="team.html">OUR TEAM</a></li>
+         <li><a href="ambassador.html">CAMPUS AMBASSADOR</a></li>
+        <li><a href="sponsors.html">SPONSORS</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>--
+<marquee behavior="scroll" direction="left" scrollamount="3" style="font-size:20px;"> There are slight modifications in the rules of certain events. Please check. </marquee>
+<!-- End header -->
+
+<!-- Events page content -->
+<div class="heading"><u> EVENTS </u></div>
+<!--<div style="margin-left: 60px">
+<div style="text-align:left;">
+    <h3><u><b> Registration Fee: </b></u> </h3> 
+    <h4> 1. The participation fees for any event, except Battle Field, is <b><u>Rs 100/- (per head).</u></b> <br> 
+2. The participation fees for Battle Field, is <b><u>Rs 300/- (per head).</u></b> <br>
+3. COMBO – One can pay <b><u>Rs 500/-</u></b> and participate in all the events except Battle Field.  </h4> </div>
+
+<h3 style="color:red; display: inline-block">Note:</h3> <h4 style="display:inline-block"> Support will be provided to beginners and those in need, simply <a href="https://classroom.google.com" style="font-size: 16px" target="_blank"> Click here </a> and join using the code: <b>3t76l3</b> </h4> 
+<h3><u><b> Workshop:</b> </u> </h3>
+<h4>A workshop will be conducted which enables you to participate in atleast 8 events. The date of workshop is 15th September. For further details, <a href="https://goo.gl/forms/BEpaVnrM2wt4UGpg1" target="_blank" style="font-size: 16px"> Click here </a> </h4>
+<h3><u><b> Cash Awards:</b> </u></h3> 
+<h4> The cash awards will be out soon.
+As Battle Field is the major event, the cash award of Battle Field will be more compared to other events <br> </h4> 
+</div>-->
+<div class="tiles">
+<div class="flip-container" ontouchstart="this.classList.toggle('hover');">
+  <div class="flipper">
+    <div class="front">
+      <img src="images1/webkooks.jpg">
+      <div class="event-title">Webkooks</div>
+    </div>
+    <div class="back"> <div class="cover"> 
+    WEB KOOKS is an event of TECSTASY 2k18 organized as a part of SUDHEE by IT department of CBIT. All you need to do is submit your User Interface (UI), along with a Powerpoint presentation. Our technical team will check your UI for syntax and plagiarism (< 30%). The team that makes best design wins and shall be rewarded with cash prize and a merit certificate. So, what are you waiting for! Come, participate and give us the best you can. See you all there!
+ <br>
+      <div style="margin-top: 30px; margin-bottom: 20px;">
+      <a href="docs/battlefield.pdf" target="_blank" style="background-color: #fb632e; color: white; text-decoration: none; padding: 20px; text-shadow: none;"> Details </a>
+    </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="flip-container" ontouchstart="this.classList.toggle('hover');">
+  <div class="flipper">
+    <div class="front">
+      <img src="images1/cognos.jpg">
+      <div class="event-title">Cognos</div>
+    </div>
+    <div class="back"> <div class="cover"> 
+       Paper presentation always plays an extravagant role in every student’s life. It is a part of technical fest in every college. COGNOS is an event of TECSTASY 2k18 organized as a part of SUDHEE by IT department of CBIT.The paper presentation event, is one of the elite events of tecstasy, giving a platform for the opportunity seekers to present their ideas. Presenting paper will add a lot of significance to the resume besides it also helps in developing various skills to present a paper an abstract must be submitted on a predefined topic.
+        <div style="margin-top: 30px; margin-bottom: 20px;">
+      <a href="docs/balancebot.pdf" target="_blank" style="background-color: #fb632e; color: white; text-decoration: none; padding: 20px; text-shadow: none;"> Details </a>
+    </div>
+      </div>  
+    </div>
+  </div>
+</div>
+<div class="flip-container" ontouchstart="this.classList.toggle('hover');">
+  <div class="flipper">
+    <div class="front">
+      <img src="images1/techfun.jpeg">
+      <div class="event-title">Tech fun</div>
+    </div>
+    <div class="back"> <div class="cover"> 
+    Fed up of playing routine coding games for technical fests? Ever thought of having ultimate fun along with technicality. Come and unleash your potential in the game TECH FUN. TECH FUN is an event of TECSTASY 2k18 organized as a part of SUDHEE by IT department of CBIT.<br>
+      <div style="margin-top: 30px; margin-bottom: 20px;">
+      <a href="docs/robosoccer.pdf" target="_blank" style="background-color: #fb632e; color: white; text-decoration: none; padding: 20px; text-shadow: none;"> Details </a>
+    </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+<div class="tiles">
+<div class="flip-container" ontouchstart="this.classList.toggle('hover');">
+  <div class="flipper">
+    <div class="front">
+      <img src="images1/Kodemania.jpg">
+      <div class="event-title">Kodemania  </div>
+    </div>
+    <div class="back"> <div class="cover"> 
+     
+     Hey coders! We are back with everything new! Wanna test your aptitude and coding skills? KODEMANIA is an event of TECSTASY 2k18 organized as a part of SUDHEE by IT department of CBIT.Where you can discover the debugger and coder in you. Round one- Aptitude and debugging: Answer the simple logical Questions and up your game for the debugging questions, participants who beat the test goes to the next! Round two- Problem Solver: You are provided with a problem statement. Give us a productive and skillful solution to it. <br>
+      <div style="margin-top: 30px; margin-bottom: 20px;">
+      <a href="docs/baskobots.pdf" target="_blank"  style="background-color: #fb632e; color: white; text-decoration: none; padding: 20px; text-shadow: none;"> Details </a>
+    </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="flip-container" ontouchstart="this.classList.toggle('hover');">
+  <div class="flipper">
+    <div class="front">
+      <img src="images1/qmb2.jpg">
+      <div class="event-title">Quiz Buzz<!--<span style="text-transform:lowercase">i</span>-Gesture--></div>
+    </div>
+    <div class="back"> <div class="cover"> 
+    If you feel that your lateral thinking is top-notch then you will love taking our challenging trivia quiz! We will put your general / technical knowledge to the ultimate test. QUIZ ME is an event of TECSTASY 2k18 organized as a part of SUDHEE by IT department of CBIT. Take our quiz and challenge yourself. Have fun using questions and answers to test how much you know and enjoy the wide range of cool trivia.
+      <div style="margin-top: 30px; margin-bottom: 20px;">
+      <a href="docs/gesture.pdf" target="_blank" style="background-color: #fb632e; color: white; text-decoration: none; padding: 20px; text-shadow: none;"> Details </a>
+    </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="flip-container" ontouchstart="this.classList.toggle('hover');">
+  <div class="flipper">
+    <div class="front">
+      <img src="images1/codeathon.jpg">
+      <div class="event-title">Code-a-thon</div>
+    </div>
+    <div class="back"> <div class="cover"> 
+      CODE-A-THON is an event of TECSTASY 2k18 organized as a part of SUDHEE by IT department of CBIT. Each Team will have to choose a problem statement to which they will be working on a solution. This involves 2 days(approx 30hrs) of hard coding . The solution can be in the form of a Web/Progressive Web/Android App. Later, each team should give a presentation on their work.
+      <div style="margin-top: 30px; margin-bottom: 20px;">
+      <a href="docs/jigsawsolver.pdf" target="_blank" style="background-color: #fb632e; color: white; text-decoration: none; padding: 20px; text-shadow: none;"> Details </a>
+    </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+<div class="tiles">
+<div class="flip-container" ontouchstart="this.classList.toggle('hover');">
+  <div class="flipper">
+    <div class="front">
+      <img src="images1/wordfeud.jpg">
+      <div class="event-title">Word feud</div>
+    </div>
+    <div class="back"> <div class="cover"> 
+     An ardent solver of crossword puzzles? WORD FEUD is an event of TECSTASY 2k18 organized as a part of SUDHEE by IT department of CBIT.Prove your programming language and puzzling skills. Collect the pieces of clues given to you and solve the crossword before the clock ticks away. You will be given an empty crossword puzzle which must be filled with the answers to the questions, which are usually the pre-defined programming language keywords and methods.
+
+      <div style="margin-top: 30px; margin-bottom: 20px;">
+      <a href="docs/walltouch.pdf" target="_blank" style="background-color: #fb632e; color: white; text-decoration: none; padding: 20px; text-shadow: none;"> Details </a>
+    </div>
+    </div>
+    </div>
+  </div>
+</div>
+<div class="flip-container" ontouchstart="this.classList.toggle('hover');">
+  <div class="flipper">
+    <div class="front">
+      <img src="images1/techhunt.jpg">
+      <div class="event-title">Tech Hunt</div>
+    </div>
+    <div class="back"> <div class="cover"> 
+      Ever tried treasure hunt via coding?All you need to do is solve a problem statement that may be logical reasoning or code snippet.TECH HUNT is an event of TECSTASY 2k18 organized as a part of SUDHEE by IT department of CBIT. It is an event where you need to hunt your brains for logic behind the code and solve them by using previous code.Reach the maximum possible stage of the treasure hunt before time runs out. 
+<div style="margin-top: 30px; margin-bottom: 20px;">
+      <a href="docs/roborace.pdf" target="_blank" style="background-color: #fb632e; color: white; text-decoration: none; padding: 20px; text-shadow: none;"> Details </a>
+    </div>
+    </div>
+    </div>
+  </div>
+</div>
+<div class="flip-container" ontouchstart="this.classList.toggle('hover');">
+  <div class="flipper">
+    <div class="front">
+      <img src="images1/bug.jpg">
+      <div class="event-title">Bug Hunter</div>
+    </div>
+    <div class="back"> <div class="cover"> 
+Have the capability to detect bugs in the code, starting from a semicolon!? Well, TECSTASY is a perfect arena to showcase your skills. BUG HUNTER is an event of TECSTASY 2k18 organized as a part of SUDHEE by IT department of CBIT. Bug Hunter is a debugging event in which you can discover the debugger in you. Don't wait until you have a bug to step through your code. Hunt the bugs in the given time and become the ultimate King or Queen of bug hunters. You can choose your interested language of programming to debug. Solve the set of questions given to you in a time of 20 min 
+If writing code is an art, debugging is black magic.
+      <div style="margin-top: 30px; margin-bottom: 20px;">
+      <a href="docs/coloursort.pdf"  target="_blank" style="background-color: #fb632e; color: white; text-decoration: none; padding: 20px; text-shadow: none;"> Details </a>
+    </div>
+   </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="tiles">
+<div class="flip-container" ontouchstart="this.classList.toggle('hover');">
+  <div class="flipper">
+    <div class="front">
+      <img src="images1/smartcoding.png">
+      <div class="event-title">Smart coding</div>
+    </div>
+    <div class="back"> <div class="cover"> 
+      Are you brave enough to enter the room?.
+SMART CODING is an event of TECSTASY 2k18 organized as a part of SUDHEE by IT department of CBIT. A coding competition where contestants are trapped in a room for a certain amount of time in which they will be given a mix of logical reasoning and programming based questions.The trick here is to find the answer to get the next clue.Each step will get you and your team closer to the key.Find the key by answering all the questions before time runs out!.
+All participants will be rewarded and the top scorers will be given merit certificates apart from cash prizes.
+So are you up for the challenge ?
+
+      <div style="margin-top: 30px; margin-bottom: 20px;">
+      <a href="docs/ballcatcher.pdf" target="_blank" style="background-color: #fb632e; color: white; text-decoration: none; padding: 20px; text-shadow: none;"> Details </a>
+    </div>
+    </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- This is for mobile view -->
+<div class="mobile-tile">
+<div class="mobile-flip-container" ontouchstart="this.classList.toggle('hover');">
+  <div class="mobile-flipper">
+    <div class="mobile-front">
+      <img src="images1/webkooks.jpg">
+      <div class="event-title">Web kooks</div>
+    </div>
+    <div class="mobile-back"> <div class="cover"> 
+       WEB KOOKS is an event of TECSTASY 2k18 organized as a part of SUDHEE by IT department of CBIT. All you need to do is submit your User Interface (UI), along with a Powerpoint presentation. Our technical team will check your UI for syntax and plagiarism (< 30%). The team that makes best design wins and shall be rewarded with cash prize and a merit certificate. So, what are you waiting for! Come, participate and give us the best you can. See you all there!
+       <div style="margin-top: 30px; margin-bottom: 20px;">
+      <a href="docs/battlefield.pdf" target="_blank" style="background-color: #fb632e; color: white; text-decoration: none; padding: 20px; text-shadow: none;"> Details </a>
+    </div>
+    </div>
+    </div>
+  </div>
+</div>
+</div>
+<div class="mobile-tile">
+<div class="mobile-flip-container" ontouchstart="this.classList.toggle('hover');">
+  <div class="mobile-flipper">
+    <div class="mobile-front">
+      <img src="images1/cognos.jpg">
+      <div class="event-title">cognos</div>
+    </div>
+    <div class="mobile-back"> <div class="cover"> 
+     Paper presentation always plays an extravagant role in every students life. It is a part of technical fest in every college. COGNOS is an event of TECSTASY 2k18 organized as a part of SUDHEE by IT department of CBIT.The paper presentation event, is one of the elite events of tecstasy, giving a platform for the opportunity seekers to present their ideas. Presenting paper will add a lot of significance to the resume besides it also helps in developing various skills to present a paper an abstract must be submitted on a predefined topic.
+
+       <div style="margin-top: 30px; margin-bottom: 20px;">
+      <a href="docs/balancebot.pdf" target="_blank"  style="background-color: #fb632e; color: white; text-decoration: none; padding: 20px; text-shadow: none;"> Details </a>
+    </div>
+    </div>
+    </div>
+  </div>
+</div>
+</div>
+<div class="mobile-tile">
+<div class="mobile-flip-container" ontouchstart="this.classList.toggle('hover');">
+  <div class="mobile-flipper">
+    <div class="mobile-front">
+      <img src="images1/techfun.jpeg">
+      <div class="event-title">Tech Fun</div>
+    </div>
+    <div class="mobile-back"> <div class="cover"> 
+    Fed up of playing routine coding games for technical fests? Ever thought of having ultimate fun along with technicality. Come and unleash your potential in the game TECH FUN. TECH FUN is an event of TECSTASY 2k18 organized as a part of SUDHEE by IT department of CBIT.
+    <div style="margin-top: 30px; margin-bottom: 20px;">
+      <a href="docs/robosoccer.pdf" target="_blank" style="background-color: #fb632e; color: white; text-decoration: none; padding: 20px; text-shadow: none;"> Details </a>
+    </div>
+    </div>
+    </div>
+  </div>
+</div>
+</div>
+<div class="mobile-tile">
+<div class="mobile-flip-container" ontouchstart="this.classList.toggle('hover');">
+  <div class="mobile-flipper">
+    <div class="mobile-front">
+      <img src="images1/Kodemania.jpg">
+      <div class="event-title">Kodemania</div>
+    </div>
+    <div class="mobile-back"> <div class="cover"> 
+    Hey coders! We are back with everything new! Wanna test your aptitude and coding skills? KODEMANIA is an event of TECSTASY 2k18 organized as a part of SUDHEE by IT department of CBIT.Where you can discover the debugger and coder in you. Round one- Aptitude and debugging: Answer the simple logical Questions and up your game for the debugging questions, participants who beat the test goes to the next! Round two- Problem Solver: You are provided with a problem statement. Give us a productive and skillful solution to it.
+      <div style="margin-top: 30px; margin-bottom: 20px;">
+      <a href="docs/baskobots.pdf" target="_blank" style="background-color: #fb632e; color: white; text-decoration: none; padding: 20px; text-shadow: none;"> Details </a>
+    </div>
+     </div> 
+    </div>
+  </div>
+</div>
+</div>
+<div class="mobile-tile">
+<div class="mobile-flip-container" ontouchstart="this.classList.toggle('hover');">
+  <div class="mobile-flipper">
+    <div class="mobile-front">
+      <img src="images1/qmb2.jpg">
+      <div class="event-title">Quizme</div>
+    </div>
+    <div class="mobile-back"> <div class="cover"> 
+    If you feel that your lateral thinking is top-notch then you will love taking our challenging trivia quiz! We will put your general / technical knowledge to the ultimate test. QUIZ ME is an event of TECSTASY 2k18 organized as a part of SUDHEE by IT department of CBIT. Take our quiz and challenge yourself. Have fun using questions and answers to test how much you know and enjoy the wide range of cool trivia.
+    <div style="margin-top: 30px; margin-bottom: 20px;">
+      <a href="docs/gesture.pdf" target="_blank"  style="background-color: #fb632e; color: white; text-decoration: none; padding: 20px; text-shadow: none;"> Details </a>
+    </div>
+    </div>
+    </div>
+  </div>
+</div>
+</div>
+<div class="mobile-tile">
+<div class="mobile-flip-container" ontouchstart="this.classList.toggle('hover');">
+  <div class="mobile-flipper">
+    <div class="mobile-front">
+      <img src="images1/codeathon.jpg">
+      <div class="event-title">Code-a-thon</div>
+    </div>
+    <div class="mobile-back"> <div class="cover"> 
+    CODE-A-THON is an event of TECSTASY 2k18 organized as a part of SUDHEE by IT department of CBIT. Each Team will have to choose a problem statement to which they will be working on a solution. This involves 2 days(approx 30hrs) of hard coding . The solution can be in the form of a Web/Progressive Web/Android App. Later, each team should give a presentation on their work.
+
+    <div style="margin-top: 30px; margin-bottom: 20px;">
+      <a href="docs/jigsawsolver.pdf" target="_blank" style="background-color: #fb632e; color: white; text-decoration: none; padding: 20px; text-shadow: none;"> Details </a>
+    </div>
+    </div>
+    </div>
+  </div>
+</div>
+</div>
+<div class="mobile-tile">
+<div class="mobile-flip-container" ontouchstart="this.classList.toggle('hover');">
+  <div class="mobile-flipper">
+    <div class="mobile-front">
+      <img src="images1/wordfeud.jpg">
+      <div class="event-title">Word Fued</div>
+    </div>
+    <div class="mobile-back"> <div class="cover"> 
+     An ardent solver of crossword puzzles? WORD FEUD is an event of TECSTASY 2k18 organized as a part of SUDHEE by IT department of CBIT.Prove your programming language and puzzling skills. Collect the pieces of clues given to you and solve the crossword before the clock ticks away. You will be given an empty crossword puzzle which must be filled with the answers to the questions, which are usually the pre-defined programming language keywords and methods.
+
+   <div style="margin-top: 30px; margin-bottom: 20px;">
+      <a href="docs/walltouch.pdf" target="_blank" style="background-color: #fb632e; color: white; text-decoration: none; padding: 20px; text-shadow: none;"> Details </a>
+    </div>
+   </div>
+    </div>
+  </div>
+</div>
+</div>
+<div class="mobile-tile">
+<div class="mobile-flip-container" ontouchstart="this.classList.toggle('hover');">
+  <div class="mobile-flipper">
+    <div class="mobile-front">
+      <img src="images1/techhunt.jpg">
+      <div class="event-title">Tech Hunt</div>
+    </div>
+    <div class="mobile-back"> <div class="cover"> 
+     Ever tried treasure hunt via coding?All you need to do is solve a problem statement that may be logical reasoning or code snippet.TECH HUNT is an event of TECSTASY 2k18 organized as a part of SUDHEE by IT department of CBIT. It is an event where you need to hunt your brains for logic behind the code and solve them by using previous code.Reach the maximum possible stage of the treasure hunt before time runs out. 
+
+  <div style="margin-top: 30px; margin-bottom: 20px;">
+      <a href="docs/roborace.pdf" target="_blank"  style="background-color: #fb632e; color: white; text-decoration: none; padding: 20px; text-shadow: none;"> Details </a>
+    </div>
+   </div>
+    </div>
+  </div>
+</div>
+</div>
+<div class="mobile-tile">
+<div class="mobile-flip-container" ontouchstart="this.classList.toggle('hover');">
+  <div class="mobile-flipper">
+    <div class="mobile-front">
+      <img src="images1/bug.jpg">
+      <div class="event-title">Bug Hungter</div>
+    </div>
+    <div class="mobile-back"> <div class="cover"> 
+     Have the capability to detect bugs in the code, starting from a semicolon!? Well, TECSTASY is a perfect arena to showcase your skills. BUG HUNTER is an event of TECSTASY 2k18 organized as a part of SUDHEE by IT department of CBIT. Bug Hunter is a debugging event in which you can discover the debugger in you. Don't wait until you have a bug to step through your code. Hunt the bugs in the given time and become the ultimate King or Queen of bug hunters. You can choose your interested language of programming to debug. Solve the set of questions given to you in a time of 20 min 
+If writing code is an art, debugging is black magic.  
+
+    <div style="margin-top: 30px; margin-bottom: 20px;">
+      <a href="docs/coloursort.pdf" target="_blank" style="background-color: #fb632e; color: white; text-decoration: none; padding: 20px; text-shadow: none;"> Details </a>
+    </div>
+    </div>
+    </div>
+  </div>
+</div>
+</div>
+<div class="mobile-tile">
+<div class="mobile-flip-container" ontouchstart="this.classList.toggle('hover');">
+  <div class="mobile-flipper">
+    <div class="mobile-front">
+      <img src="images1/smartcoding.png">
+      <div class="event-title">Smart coding</div>
+    </div>
+    <div class="mobile-back"> <div class="cover"> 
+    Are you brave enough to enter the room?.
+SMART CODING is an event of TECSTASY 2k18 organized as a part of SUDHEE by IT department of CBIT. A coding competition where contestants are trapped in a room for a certain amount of time in which they will be given a mix of logical reasoning and programming based questions.The trick here is to find the answer to get the next clue.Each step will get you and your team closer to the key.Find the key by answering all the questions before time runs out!.
+All participants will be rewarded and the top scorers will be given merit certificates apart from cash prizes.
+So are you up for the challenge ?
+
+    <div style="margin-top: 30px; margin-bottom: 20px;">
+      <a href="docs/ballcatcher.pdf" target="_blank" style="background-color: #fb632e; color: white; text-decoration: none; padding: 20px; text-shadow: none;"> Details </a>
+    </div>
+    </div>
+    </div>
+  </div>
+</div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+</body>
+</html>
